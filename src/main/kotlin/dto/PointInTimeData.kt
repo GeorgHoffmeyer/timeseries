@@ -2,7 +2,7 @@ package dto
 
 import java.math.BigDecimal
 
-data class TimePoint(
-        var timestamp : Int,
+data class PointInTimeData(
+        var timestamp : Long,
         var value : BigDecimal
 )

@@ -1,25 +1,42 @@
 package repository
 
-import dto.TimePoint
+import dto.PointInTimeData
+import java.math.BigDecimal
 
-class TimeSeriesRepository {
+internal class TimeSeriesRepository {
 
-    val timeSeries : MutableList<TimePoint>
+    val timeSeries : MutableMap<String, MutableMap<Long, BigDecimal>>
 
     constructor() {
-        timeSeries = mutableListOf()
+        timeSeries = mutableMapOf()
     }
 
-    fun add(timePoint : TimePoint) {
-        timeSeries.add(timePoint)
-    }
-
-    fun get(timestamp : Int) : TimePoint? {
-        return timeSeries.find { timePoint -> timePoint.timestamp.equals(timestamp)
+    fun add(key : String, pointInTimeData : PointInTimeData) {
+        if(timeSeries.get(key)!=null) {
+            timeSeries.get(key)?.put(pointInTimeData.timestamp, pointInTimeData.value);
+        } else {
+            timeSeries.put(key, mutableMapOf(Pair(pointInTimeData.timestamp, pointInTimeData.value)))
         }
     }
 
-    fun getAll() : List<TimePoint> {
-        return timeSeries.filterNotNull()
+    fun get(key : String, timestamp: Long) : PointInTimeData? {
+        var timeserieseForKey = timeSeries.get(key)
+        if(timeserieseForKey == null)
+            return null
+
+        var value = timeserieseForKey.get(timestamp)
+        if(value == null)
+            return null
+
+        return PointInTimeData(timestamp, value)
+    }
+
+    fun getAll(key:String) : List<PointInTimeData> {
+
+        return timeSeries.getOrDefault(key, mutableMapOf<Long, BigDecimal>()).map { entry: Map.Entry<Long, BigDecimal> -> PointInTimeData(entry.key, entry.value) }
+    }
+
+    fun clear() {
+        timeSeries.clear()
     }
 }
