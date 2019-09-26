@@ -51,10 +51,10 @@ internal class TimeseriesService(val timeSeriesRepository: TimeSeriesRepository)
     }
 
     fun clusterTimeseries(key: String,
-                          pointInTimeInterval: Long,
+                          pointInTimeInterval: Int,
                           timestampStart: Long,
                           timestampEnd: Long,
-                          agregateInterval: Long): List<ClusterDto> {
+                          agregateInterval: Int): List<ClusterDto> {
 
         val clustredTimeseries = mutableListOf<ClusterDto>()
 

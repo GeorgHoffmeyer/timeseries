@@ -150,7 +150,7 @@ internal class TimeseriesServiceTest {
     @Test
     fun testClustrer() {
         val key = "timeseries1"
-        val interval = 1L
+        val interval = 1
         val startPoint = 10L
 
         val pointInTimeData1 = PointInTimeData(startPoint + 0, BigDecimal.valueOf(1))
@@ -199,10 +199,12 @@ internal class TimeseriesServiceTest {
     @Test
     fun testMany() {
         val key = "timeseries1"
-        val interval = 1L
+        val interval = 1
         val startPoint = 10L
+        val amount = 1000000
+        val agregationInterval = 96
 
-        for(i in 0..10000) {
+        for(i in 0..amount) {
             val pointInTimeData = PointInTimeData(startPoint + i, BigDecimal.valueOf(1))
 
             timeseriesService.addPontInTimeData(key, pointInTimeData)
@@ -211,7 +213,7 @@ internal class TimeseriesServiceTest {
         println("Timeseries count: ${timeseriesService.getTimeseries(key).size}")
 
         val currentTimeBefore = System.nanoTime()
-        val clusteredData = timeseriesService.clusterTimeseries(key, interval, 10L, 10010L, 4)
+        val clusteredData = timeseriesService.clusterTimeseries(key, interval, 10L, amount+startPoint, agregationInterval)
         val currentTimeAfter = System.nanoTime()
 
         val durationInMilliseconds = (currentTimeAfter - currentTimeBefore)/1000000
