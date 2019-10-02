@@ -5,7 +5,7 @@ import org.gho.timeseries.service.TimeseriesService
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import repository.TimeSeriesRepository
+import repository.TimeseriesRepository
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -14,7 +14,7 @@ import java.time.ZoneOffset
 
 internal class TimeseriesServiceTest {
 
-    var timeSeriesRepository = TimeSeriesRepository()
+    var timeSeriesRepository = TimeseriesRepository()
     var timeseriesService = TimeseriesService(timeSeriesRepository)
 
     @Before

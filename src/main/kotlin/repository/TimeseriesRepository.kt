@@ -1,15 +1,13 @@
-package repository
+package org.gho.timeseries.repository
 
 import dto.PointInTimeData
+import org.springframework.stereotype.Component
 import java.math.BigDecimal
 
-internal class TimeSeriesRepository {
+@Component
+class TimeseriesRepository {
 
-    val timeSeries : MutableMap<String, MutableMap<Long, BigDecimal>>
-
-    constructor() {
-        timeSeries = mutableMapOf()
-    }
+    val timeSeries : MutableMap<String, MutableMap<Long, BigDecimal>> = mutableMapOf()
 
     fun add(key : String, pointInTimeData : PointInTimeData) {
         if(timeSeries.get(key)!=null) {
@@ -24,9 +22,7 @@ internal class TimeSeriesRepository {
         if(timeserieseForKey == null)
             return null
 
-        var value = timeserieseForKey.get(timestamp)
-        if(value == null)
-            return null
+        var value: BigDecimal = timeserieseForKey.get(timestamp) ?: return null
 
         return PointInTimeData(timestamp, value)
     }

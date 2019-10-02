@@ -2,26 +2,26 @@ package org.gho.timeseries.service
 
 import dto.ClusterDto
 import dto.PointInTimeData
+import org.gho.timeseries.repository.TimeseriesRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import repository.TimeSeriesRepository
 import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.math.max
 import kotlin.math.min
 
 @Service
-internal class TimeseriesService(val timeSeriesRepository: TimeSeriesRepository) {
+class TimeseriesService(val timeseriesRepository: TimeseriesRepository) {
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java.name)
     }
 
     fun getTimeseries(key: String): List<PointInTimeData> {
-        return timeSeriesRepository.getAll(key)
+        return timeseriesRepository.getAll(key)
     }
 
     fun addPontInTimeData(key: String, pointInTimeData: PointInTimeData) {
-        timeSeriesRepository.add(key, pointInTimeData)
+        timeseriesRepository.add(key, pointInTimeData)
     }
 
     fun aggregatePointsInTime(key: String,
@@ -30,7 +30,7 @@ internal class TimeseriesService(val timeSeriesRepository: TimeSeriesRepository)
                               timestampEnd: Long,
                               agregateInterval: Long): Map<Long, BigDecimal> {
 
-        val timeseries = timeSeriesRepository.getAll(key).filter { pit ->
+        val timeseries = timeseriesRepository.getAll(key).filter { pit ->
             (pit.timestamp - timestampStart).rem(pointInTimeInterval) == 0L
         }
 
@@ -58,7 +58,7 @@ internal class TimeseriesService(val timeSeriesRepository: TimeSeriesRepository)
 
         val clustredTimeseries = mutableListOf<ClusterDto>()
 
-        timeSeriesRepository.getAll(key)
+        timeseriesRepository.getAll(key)
                 .filter { pit ->
                     (pit.timestamp - timestampStart).rem(pointInTimeInterval) == 0L
                 }

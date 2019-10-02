@@ -1,0 +1,31 @@
+apply plugin: 'com.chrisgahlert.gradle-dcompose-plugin'
+
+dcompose {
+    namePrefix = 'gho_timeseries_'
+    timeseriesService {
+        buildFiles = project.copySpec {
+            from project.file('src/main/docker/springboot')
+            from bootJar
+        }
+        image = null
+        deploy = true
+        forcePull = false
+        portBindings = ['8080:80', '5001:8000']
+        networks = [network(':default')]
+        dependsOn = [
+                service(':redis'),
+        ]
+        env = [
+                "DEBUG_JVM=true",
+                "DEBUG_SPRINGBOOT=true",
+                "LOG_LEVEL=debug"
+
+        ]
+    }
+
+    redis {
+        image = 'redis:5.0.5-alpine3.10'
+        portBindings = ['6379:6379']
+        deploy = false
+    }
+}
